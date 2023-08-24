@@ -1,0 +1,98 @@
+{% extends "header.html" %}
+{% block body %}
+
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f5dcd4;
+    transition: .4s;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: rgb(248, 23, 23);
+    transition: .4s;
+  }
+  input:checked + .slider {
+    background-color: #48ef5f;
+  }
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  .slider.round {
+    border-radius: 34px;
+  }
+  .slider.round:before {
+    border-radius: 50%;
+  }
+</style>
+
+<body>
+  <hr>
+  <h1 style="color: darkorange;">Admin Panel</h1>
+  <hr>
+  <table>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Current State</th>
+      <th>Action</th>
+    </tr>
+    {% for user in users %}
+    {% if user.username != '205121038' %}
+      <tr>
+        <td style="color: {% if user.upload_access != 'accept' %}red{% else %}green{% endif %};">{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.upload_access }}</td>
+        <td>
+          <form method="post">
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <label class="switch">
+              <input type="checkbox" name="action" value="accept" {% if user.upload_access == 'accept' %}checked{% endif %}>
+              <span class="slider round"></span>
+            </label>
+            <button type="submit">Update</button>
+          </form>
+        </td>
+      </tr>
+    {% endif %}
+    {% endfor %}
+    
+  
+  </table>
+</body>
+
+{% endblock %}
